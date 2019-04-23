@@ -1,0 +1,29 @@
+PODS:
+  - Kingfisher (4.9.0)
+  - LLCycleScrollView (1.4.9):
+    - Kingfisher
+  - SnapKit (4.0.1)
+  - SwiftForms (1.8.2)
+
+DEPENDENCIES:
+  - Kingfisher (~> 4.9.0)
+  - LLCycleScrollView (~> 1.4.0)
+  - SnapKit (~> 4.0.0)
+  - SwiftForms
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Kingfisher
+    - LLCycleScrollView
+    - SnapKit
+    - SwiftForms
+
+SPEC CHECKSUMS:
+  Kingfisher: 64539b51826b778206daa6ed815d12653caa69dd
+  LLCycleScrollView: fe4438b01970d0f07f514070e9abad5c3fed2aa6
+  SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
+  SwiftForms: f0d4d30401e21de87d9b7b63a4691a3d4e22bab5
+
+PODFILE CHECKSUM: 423d5d8d0b184b66be342e59f5a7aa6336a0a607
+
+COCOAPODS: 1.6.0.beta.2
