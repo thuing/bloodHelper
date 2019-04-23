@@ -23,6 +23,11 @@
 		656D3C63226F073000472776 /* doctorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D3C5F226F072F00472776 /* doctorViewController.swift */; };
 		656D3C64226F073000472776 /* patientChangedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D3C60226F072F00472776 /* patientChangedViewController.swift */; };
 		656D3C65226F073000472776 /* patientViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D3C61226F073000472776 /* patientViewController.swift */; };
+		659D8D7E226F4A9A00CFE9DF /* UICollectionGridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659D8D7D226F4A9A00CFE9DF /* UICollectionGridViewController.swift */; };
+		659D8D80226F4CE800CFE9DF /* UICollectionGridViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659D8D7F226F4CE800CFE9DF /* UICollectionGridViewCell.swift */; };
+		659D8D82226F4D1B00CFE9DF /* UICollectionGridViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659D8D81226F4D1B00CFE9DF /* UICollectionGridViewLayout.swift */; };
+		659D8D84226F547600CFE9DF /* patientNoramlChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659D8D83226F547600CFE9DF /* patientNoramlChartViewController.swift */; };
+		659D8D86226F675100CFE9DF /* patientChangedChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659D8D85226F675100CFE9DF /* patientChangedChartViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +71,11 @@
 		656D3C5F226F072F00472776 /* doctorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = doctorViewController.swift; sourceTree = "<group>"; };
 		656D3C60226F072F00472776 /* patientChangedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = patientChangedViewController.swift; sourceTree = "<group>"; };
 		656D3C61226F073000472776 /* patientViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = patientViewController.swift; sourceTree = "<group>"; };
+		659D8D7D226F4A9A00CFE9DF /* UICollectionGridViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionGridViewController.swift; sourceTree = "<group>"; };
+		659D8D7F226F4CE800CFE9DF /* UICollectionGridViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionGridViewCell.swift; sourceTree = "<group>"; };
+		659D8D81226F4D1B00CFE9DF /* UICollectionGridViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionGridViewLayout.swift; sourceTree = "<group>"; };
+		659D8D83226F547600CFE9DF /* patientNoramlChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = patientNoramlChartViewController.swift; sourceTree = "<group>"; };
+		659D8D85226F675100CFE9DF /* patientChangedChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = patientChangedChartViewController.swift; sourceTree = "<group>"; };
 		E4BB0092835C00AB2519A789 /* Pods_bloodHelper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bloodHelper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -155,6 +165,9 @@
 			isa = PBXGroup;
 			children = (
 				656D3C54226F071B00472776 /* UITableTool.swift */,
+				659D8D7D226F4A9A00CFE9DF /* UICollectionGridViewController.swift */,
+				659D8D7F226F4CE800CFE9DF /* UICollectionGridViewCell.swift */,
+				659D8D81226F4D1B00CFE9DF /* UICollectionGridViewLayout.swift */,
 			);
 			path = tool;
 			sourceTree = "<group>";
@@ -184,6 +197,8 @@
 				656D3C5E226F072F00472776 /* patientNormalChangeViewController.swift */,
 				656D3C60226F072F00472776 /* patientChangedViewController.swift */,
 				656D3C61226F073000472776 /* patientViewController.swift */,
+				659D8D83226F547600CFE9DF /* patientNoramlChartViewController.swift */,
+				659D8D85226F675100CFE9DF /* patientChangedChartViewController.swift */,
 			);
 			path = patient;
 			sourceTree = "<group>";
@@ -389,7 +404,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				659D8D84226F547600CFE9DF /* patientNoramlChartViewController.swift in Sources */,
+				659D8D80226F4CE800CFE9DF /* UICollectionGridViewCell.swift in Sources */,
 				656D3C64226F073000472776 /* patientChangedViewController.swift in Sources */,
+				659D8D7E226F4A9A00CFE9DF /* UICollectionGridViewController.swift in Sources */,
+				659D8D82226F4D1B00CFE9DF /* UICollectionGridViewLayout.swift in Sources */,
 				656D3C5D226F072600472776 /* patientInfoViewController.swift in Sources */,
 				656D3C57226F071F00472776 /* patientPersonalViewController.swift in Sources */,
 				656D3C65226F073000472776 /* patientViewController.swift in Sources */,
@@ -397,6 +416,7 @@
 				656D3C62226F073000472776 /* patientNormalChangeViewController.swift in Sources */,
 				656D3C55226F071B00472776 /* UITableTool.swift in Sources */,
 				656D3C5B226F072600472776 /* patientVisitViewController.swift in Sources */,
+				659D8D86226F675100CFE9DF /* patientChangedChartViewController.swift in Sources */,
 				6512CFBD226EBB7B007CD510 /* AppDelegate.swift in Sources */,
 				656D3C5C226F072600472776 /* patientNormalViewController.swift in Sources */,
 			);

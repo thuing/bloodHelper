@@ -87,7 +87,7 @@ class patientViewController: UIViewController {
         normalChangeChart.setTitle("血常规变化图表", for: .normal)
         normalChangeChart.setTitleColor(UIColor.white, for: .normal)
         normalChangeChart.backgroundColor = UIColor(red: 105.0 / 255.0, green: 195.0 / 255.0, blue: 247.0 / 255.0, alpha: 1.0)
-        normalChangeChart.addTarget(self, action: #selector(buttonClick(_:)), for: .touchUpInside)
+        normalChangeChart.addTarget(self, action: #selector(normalChangeChart(_:)), for: .touchUpInside)
         normalChangeChart.snp.makeConstraints{(make) in
             make.width.height.equalTo(150)
             make.bottom.equalToSuperview().offset(5)
@@ -101,7 +101,7 @@ class patientViewController: UIViewController {
         SymptomChangeChart.setTitle("症状变化图表", for: .normal)
         SymptomChangeChart.setTitleColor(UIColor.white, for: .normal)
         SymptomChangeChart.backgroundColor = UIColor(red: 154.0 / 255.0, green: 160.0 / 255.0, blue: 248.0 / 255.0, alpha: 1.0)
-        SymptomChangeChart.addTarget(self, action: #selector(buttonClick(_:)), for: .touchUpInside)
+        SymptomChangeChart.addTarget(self, action: #selector(ChangedChartChart(_:)), for: .touchUpInside)
         SymptomChangeChart.snp.makeConstraints{(make) in
             make.width.height.equalTo(150)
             make.bottom.equalToSuperview().offset(5)
@@ -154,6 +154,15 @@ class patientViewController: UIViewController {
         self.navigationController?.pushViewController(pVC, animated: true)
     }
     
+    // 跳转到血常规变化图表
+    @objc func normalChangeChart(_ button :UIButton){
+        let pVC = patientNoramlChartViewController()
+        self.navigationController?.pushViewController(pVC, animated: true)
+    }
     
-    
+    // 跳转到症状变化图表
+    @objc func ChangedChartChart(_ button :UIButton){
+        let pVC = patientChangedChartViewController()
+        self.navigationController?.pushViewController(pVC, animated: true)
+    }
 }

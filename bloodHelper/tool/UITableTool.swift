@@ -10,6 +10,7 @@ import UIKit
 
 class UITableTool: UIViewController{
     
+    
     // 简单的样式列表
     func tableCell(table:UIView,labelStr:String,placeholderStr:String){
         
@@ -88,8 +89,10 @@ class UITableTool: UIViewController{
         let label = UILabel()
         table.addSubview(label)
         label.text = labelStr
+        label.numberOfLines = 2
         label.snp.makeConstraints{(make) in
             make.centerY.equalToSuperview()
+            make.width.equalTo(140)
             make.left.equalTo(20)
         }
         
@@ -104,7 +107,7 @@ class UITableTool: UIViewController{
             make.width.equalTo(200)
             make.height.equalTo(100)
             make.centerY.equalToSuperview()
-            make.right.equalTo(table.snp.right).offset(-30)
+            make.right.equalTo(table.snp.right).offset(-40)
         }
         
         let line = UIView()
@@ -118,15 +121,9 @@ class UITableTool: UIViewController{
         }
     }
     
-    // 带是否项的cell
-    //    sinaButton = UIButton(type: .custom)
-    //    sinaButton.frame = CGRect(x: 30, y: 200, width: 15, height: 15)
-    //    sinaButton.setBackgroundImage(UIImage(named: "invest_delecte"), for: .normal)
-    //    sinaButton.setBackgroundImage(UIImage(named: "invest_selecte"), for: .selected)
-    //    sinaButton.addTarget(self, action: #selector(self.sinaAction(_:)), for: .touchUpInside)
-    //    view.addSubview(sinaButton)
     
-    func tableChoosenCell(table:UIView,labelStr:String){
+    // 含有是否单项选择的cell
+    func tableChoosenCell(table:UIView,labelStr:String,trueStr:String,falseStr:String){
         
         let label = UILabel()
         table.addSubview(label)
@@ -136,18 +133,29 @@ class UITableTool: UIViewController{
             make.left.equalTo(20)
         }
         
-        let textView = UITextView()
-        table.addSubview(textView)
-        textView.isEditable = true
-        textView.isSelectable = true
-        textView.layer.cornerRadius = 5
-        textView.layer.borderColor = UIColor(red: 64.0 / 255.0, green: 224.0 / 255.0, blue: 208.0 / 255.0, alpha: 1.0).cgColor
-        textView.layer.borderWidth = 1
-        textView.snp.makeConstraints{(make) in
-            make.width.equalTo(200)
-            make.height.equalTo(100)
+        let trueBtn = UIButton(type: .custom)
+        let falseBtn = UIButton(type: .custom)
+        // 是否选择的按钮
+        table.addSubview(falseBtn)
+        falseBtn.setTitle(falseStr, for: .normal)
+        falseBtn.setTitleColor(UIColor.black, for: .normal)
+        falseBtn.setImage(UIImage(named: "unselected"), for: .normal)
+        falseBtn.setImage(UIImage(named: "selected"), for: .selected)
+        falseBtn.addTarget(self, action: #selector(self.falseAction(_:)), for: .touchUpInside)
+        falseBtn.snp.makeConstraints{(make) in
             make.centerY.equalToSuperview()
-            make.right.equalTo(table.snp.right).offset(-30)
+            make.right.equalTo(table.snp.right).offset(-50)
+        }
+        
+        table.addSubview(trueBtn)
+        trueBtn.setImage(UIImage(named: "unselected"), for: .normal)
+        trueBtn.setImage(UIImage(named: "selected"), for: .selected)
+        trueBtn.setTitle(trueStr, for: .normal)
+        trueBtn.setTitleColor(UIColor.black, for: .normal)
+        trueBtn.addTarget(self, action: #selector(self.trueAction(_:)), for: .touchUpInside)
+        trueBtn.snp.makeConstraints{(make) in
+            make.centerY.equalToSuperview()
+            make.right.equalTo(falseBtn.snp.left).offset(-30)
         }
         
         let line = UIView()
@@ -162,7 +170,25 @@ class UITableTool: UIViewController{
     }
     
     
-    
+    @objc func trueAction(_ button: UIButton?) {
+        button?.isSelected = true
+//        if trueBtn.isSelected {
+//        } else if !trueBtn.isSelected {
+//            trueBtn.isSelected = true
+//            falseBtn.isSelected = false
+//        }
+    }
+//
+//
+    @objc func falseAction(_ button: UIButton?) {
+        button?.isSelected = true
+//        if falseBtn.isSelected {
+//        } else if !falseBtn.isSelected {
+//            falseBtn.isSelected = true
+//            trueBtn.isSelected = false
+//        }
+    }
+
     
     
     

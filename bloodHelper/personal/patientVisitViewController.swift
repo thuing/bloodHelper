@@ -19,7 +19,6 @@ class patientVisitViewController: UIViewController {
         setView()
     }
     
-    
     func setView(){
         
         bgView.backgroundColor = UIColor.white
