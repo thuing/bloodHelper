@@ -15,7 +15,7 @@
             <objects>
                 <navigationController id="4wM-cc-Ter" userLabel="patient" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="首页" image="患者填写" selectedImage="tab_patient" id="TG8-SA-q1h">
-                        <color key="badgeColor" name="controlAccentColor" catalog="System" colorSpace="catalog"/>
+                        <color key="badgeColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBarItem>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="RMP-T5-3Rn">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -130,7 +130,7 @@
         <!--个人中心-->
         <scene sceneID="jAf-Ek-Hsc">
             <objects>
-                <viewController storyboardIdentifier="personalViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="WzV-eZ-qZ8" customClass="personalViewController" customModule="bloodHelper" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="personalViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="WzV-eZ-qZ8" customClass="patientPersonalViewController" customModule="bloodHelper" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="uio-em-dBK">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
