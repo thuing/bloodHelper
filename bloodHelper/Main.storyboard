@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Rw0-f4-7p4">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--patient-->
+        <scene sceneID="Jg0-vm-asC">
+            <objects>
+                <navigationController id="4wM-cc-Ter" userLabel="patient" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="首页" image="患者填写" selectedImage="tab_patient" id="TG8-SA-q1h">
+                        <color key="badgeColor" name="controlAccentColor" catalog="System" colorSpace="catalog"/>
+                    </tabBarItem>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="RMP-T5-3Rn">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="barTintColor" red="0.25098039220000001" green="0.87843137250000003" blue="0.81763698630000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <fontDescription key="fontDescription" name="PingFangSC-Semibold" family="PingFang SC" pointSize="18"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="5Yp-rq-ToJ" kind="relationship" relationship="rootViewController" id="uYv-9h-lZr"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cuc-Xr-vao" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="58" y="-695"/>
+        </scene>
+        <!--患者填写-->
+        <scene sceneID="kQ3-Yo-ixv">
+            <objects>
+                <viewController storyboardIdentifier="patientViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="5Yp-rq-ToJ" customClass="patientViewController" customModule="bloodHelper" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="64U-G3-ldt">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="IoS-1s-eAi"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="患者填写" id="pJ5-QA-7tZ"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Mog-gq-px1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1096.8" y="-696.7016491754124"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="J58-jh-Vtd">
+            <objects>
+                <tabBarController id="Rw0-f4-7p4" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="QJr-wE-bxE">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="barTintColor" red="0.25098039215686274" green="0.8784313725490196" blue="0.81763698630136983" alpha="1" colorSpace="calibratedRGB"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                <color key="value" red="0.41176470590000003" green="0.63529411759999999" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </tabBar>
+                    <connections>
+                        <segue destination="4wM-cc-Ter" kind="relationship" relationship="viewControllers" id="3Iw-ct-hvV"/>
+                        <segue destination="SxC-UD-ctI" kind="relationship" relationship="viewControllers" id="TfE-4h-cb1"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="e3r-QJ-SSI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1850" y="309"/>
+        </scene>
+        <!--doctor-->
+        <scene sceneID="AVT-TD-3Hc">
+            <objects>
+                <navigationController id="cMn-OG-cJJ" userLabel="doctor" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="医生查询" image="医生查询" selectedImage="tab_doctor" id="uT9-Ln-7Ty" userLabel="患者填写"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="C1f-au-iNa">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="barTintColor" red="0.25098039220000001" green="0.87843137250000003" blue="0.81763698630000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <fontDescription key="fontDescription" name="PingFangSC-Semibold" family="PingFang SC" pointSize="18"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </textAttributes>
+                        <textAttributes key="largeTitleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="lJa-ZY-VTO" kind="relationship" relationship="rootViewController" id="KN4-rh-wcU"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vaV-Gn-EwW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="57" y="44"/>
+        </scene>
+        <!--person-->
+        <scene sceneID="ubz-Ix-7NC">
+            <objects>
+                <navigationController id="SxC-UD-ctI" userLabel="person" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="个人中心" image="我的" selectedImage="tab_my" id="Lec-aq-edq" userLabel="患者填写"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ntt-EM-8t4">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="barTintColor" red="0.25098039220000001" green="0.87843137250000003" blue="0.81763698630000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <fontDescription key="fontDescription" name="PingFangSC-Semibold" family="PingFang SC" pointSize="18"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </textAttributes>
+                        <textAttributes key="largeTitleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="WzV-eZ-qZ8" kind="relationship" relationship="rootViewController" id="RBf-55-2wf"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XYA-rF-7lx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="57" y="784"/>
+        </scene>
+        <!--个人中心-->
+        <scene sceneID="jAf-Ek-Hsc">
+            <objects>
+                <viewController storyboardIdentifier="personalViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="WzV-eZ-qZ8" customClass="personalViewController" customModule="bloodHelper" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="uio-em-dBK">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="eOb-bv-h1n"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="个人中心" id="nWh-pD-j7p"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="J5I-AV-SBq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1060" y="784"/>
+        </scene>
+        <!--医生查询-->
+        <scene sceneID="26D-hE-y46">
+            <objects>
+                <viewController storyboardIdentifier="doctorViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="lJa-ZY-VTO" customClass="doctorViewController" customModule="bloodHelper" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="06V-h8-6C6">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="e50-mi-hDo"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="医生查询" id="gLs-4u-hxN"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rM9-6O-Jwt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1097" y="44"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="tab_doctor" width="20" height="20"/>
+        <image name="tab_my" width="20" height="20"/>
+        <image name="tab_patient" width="20" height="20"/>
+        <image name="医生查询" width="40" height="40"/>
+        <image name="患者填写" width="40" height="40"/>
+        <image name="我的" width="40" height="40"/>
+    </resources>
+</document>
