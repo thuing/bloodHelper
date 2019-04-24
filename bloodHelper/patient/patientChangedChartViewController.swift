@@ -14,7 +14,7 @@ class patientChangedChartViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        view.backgroundColor = UIColor.white
         gridViewController = UICollectionGridViewController()
         gridViewController.setColumns(columns: ["开始治疗日期", "评估日期", "疲乏", "早饱感","腹部不适","活动力不佳","注意力不佳","夜间盗汗","皮肤瘙痒","骨痛","发热","体重下降","其他特殊症状体征"])
         gridViewController.addRow(row: ["2018/10/12", "2018/10/12", "有", "无","无","无","无","无","无","无","无","无","无"])

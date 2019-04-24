@@ -13,9 +13,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+//        UserDefaults.standard.set("doctor", forKey: UuserIdentity)
+//        UserDefaults.standard.set("patient", forKey: UuserIdentity)
+        UserDefaults.standard.set("??", forKey: UuserIdentity)
+        let userIdentity = UserDefaults.standard.string(forKey: UuserIdentity)
+        let appdelegate = UIApplication.shared.delegate as? AppDelegate
+        
+        if userIdentity == "patient" {
+            print("用户身份为患者")
+            let story = UIStoryboard(name: "Main", bundle: nil)
+            let patientController = story.instantiateViewController(withIdentifier: "patientTabbar") as? UITabBarController
+            
+            appdelegate?.window?.rootViewController = patientController
+
+        }else if userIdentity == "doctor" {
+            print("用户身份为医生")
+            let story = UIStoryboard(name: "Main", bundle: nil)
+            let doctorController = story.instantiateViewController(withIdentifier: "doctorTabbar") as? UITabBarController
+            
+            appdelegate?.window?.rootViewController = doctorController
+        }else{
+            print("kong")
+        }
+        
+        
+        //appdelegate.tab.selectedIndex = 0;切换到想要的tabbar后选择到到哪个item下
+        
+        
         return true
     }
 
@@ -43,4 +69,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
 }
-

@@ -1,15 +1,14 @@
 //
-//  patientNormalChangeViewController.swift
+//  doctorinfoViewController.swift
 //  bloodHelper
 //
-//  Created by 小福 on 2019/4/23.
+//  Created by 小福 on 2019/4/24.
 //  Copyright © 2019 小福. All rights reserved.
 //
 
 import UIKit
 
-class patientNormalChangeViewController: UIViewController {
-    
+class doctorInfoViewController: UIViewController {
     let bgView = UIView()
     let tableTool = UITableTool()
     
@@ -83,35 +82,25 @@ class patientNormalChangeViewController: UIViewController {
             make.top.equalTo(table5.snp.bottom)
         }
         
-        let table7 = UIView()
-        bgView.addSubview(table7)
-        table7.snp.makeConstraints{(make) in
-            make.width.equalToSuperview()
-            make.height.equalTo(120)
-            make.centerX.equalToSuperview()
-            make.top.equalTo(table6.snp.bottom)
-        }
+        tableTool.tableCell(table:table1,labelStr: "医生编号：", placeholderStr: "请输入编号")
+        tableTool.tableCell(table:table2,labelStr: "医生姓名：", placeholderStr: "请输入姓名")
+        tableTool.tableCell(table:table3,labelStr: "医生性别：", placeholderStr: "请输入性别")
+        tableTool.tableCell(table:table4,labelStr: "医生年龄：", placeholderStr: "请输入年龄")
+        tableTool.tableCell(table:table5,labelStr: "手机号码：", placeholderStr: "请输入手机号")
+        tableTool.tableCell(table:table6,labelStr: "验证码：", placeholderStr: "请输入验证码")
         
-        tableTool.tableRightCell(table:table1,labelStr: "患者编号：", placeholderStr: "请输入编号")
-        tableTool.tableRightCell(table:table2,labelStr: "白细胞(WBC×10⁹)：", placeholderStr: "")
-        tableTool.tableRightCell(table:table3,labelStr: "红细胞(RBC×10¹²)：", placeholderStr: "")
-        tableTool.tableRightCell(table:table4,labelStr: "血红蛋白Hb(g/L)：", placeholderStr: "")
-        tableTool.tableRightCell(table:table5,labelStr: "红细胞比积HCT(%)：", placeholderStr: "")
-        tableTool.tableRightCell(table:table6,labelStr: "血小板(PLT×10⁹)：", placeholderStr: "")
-        tableTool.tableTextAreaCell(table: table7, labelStr: "治疗药物以及\n剂量调整情况：")
-        
-        
-        // 拍照输入
-        let photoEnterBtn = UIButton()
-        bgView.addSubview(photoEnterBtn)
-        photoEnterBtn.setTitle("拍照输入", for: .normal)
-        photoEnterBtn.layer.cornerRadius = 5
-        photoEnterBtn.layer.backgroundColor = UIColor(red: 64.0 / 255.0, green: 224.0 / 255.0, blue: 208.0 / 255.0, alpha: 1.0).cgColor
-        photoEnterBtn.snp.makeConstraints{(make) in
-            make.width.equalTo(140)
-            make.height.equalTo(40)
-            make.top.equalTo(table7.snp.bottom).offset(10)
-            make.left.equalTo(40)
+        let getCodeBtn = UIButton()
+        table5.addSubview(getCodeBtn)
+        getCodeBtn.setTitle("获取验证码", for: .normal)
+        getCodeBtn.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        getCodeBtn.setTitleColor(UIColor(red: 60.0 / 255.0, green: 197.0 / 255.0, blue: 31.0 / 255.0, alpha: 1.0), for: .normal)
+        getCodeBtn.layer.cornerRadius = 10
+        getCodeBtn.layer.backgroundColor = UIColor(red: 248.0 / 255.0, green: 248.0 / 255.0, blue: 248.0 / 255.0, alpha: 1.0).cgColor
+        getCodeBtn.snp.makeConstraints{(make) in
+            make.width.equalTo(90)
+            make.height.equalTo(30)
+            make.centerY.equalToSuperview()
+            make.right.equalTo(table5.snp.right).offset(-10)
         }
         
         let submitBtn = UIButton()
@@ -120,14 +109,19 @@ class patientNormalChangeViewController: UIViewController {
         submitBtn.layer.cornerRadius = 5
         submitBtn.layer.backgroundColor = UIColor(red: 64.0 / 255.0, green: 224.0 / 255.0, blue: 208.0 / 255.0, alpha: 1.0).cgColor
         submitBtn.snp.makeConstraints{(make) in
-            make.width.equalTo(140)
+            make.width.equalTo(280)
             make.height.equalTo(40)
-            make.top.equalTo(table7.snp.bottom).offset(10)
-            make.left.equalTo(photoEnterBtn.snp.right).offset(15)
+            make.centerX.equalToSuperview()
+            make.top.equalTo(table6.snp.bottom).offset(10)
         }
+        
+        //        let placeholserAttributes = [NSAttributedStringKey.foregroundColor : UIColor.blue,NSAttributedStringKey.font : UIFont.systemFont(ofSize: 16)]
+        //phoneTextField.keyboardType = .phonePad
+        
+        
         
     }
     
     
-    
 }
+

@@ -18,7 +18,6 @@ class patientViewController: UIViewController {
         setView()
     }
     
-    
     func setView(){
         
         // 轮播图
@@ -165,4 +164,6 @@ class patientViewController: UIViewController {
         let pVC = patientChangedChartViewController()
         self.navigationController?.pushViewController(pVC, animated: true)
     }
+    
+
 }
