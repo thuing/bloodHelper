@@ -8,159 +8,467 @@
 
 import UIKit
 import SnapKit
-import LLCycleScrollView
+import Charts
+import SwiftyJSON
+import Alamofire
 
-class patientViewController: UIViewController {
+class patientViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
+    
+    @IBOutlet weak var normalBtn: UIButton!
+    
+    @IBOutlet weak var linebgView: UIView!
+    @IBOutlet weak var symptomBtn: UIButton!
+    @IBOutlet weak var tableView: UITableView!
+    
+    @IBOutlet weak var scrollView: UIScrollView!
+    
+    var patientListArray: Array<Dictionary<String,JSON>> = [] as! Array<Dictionary>
+    var timeList: Array<String> = []
+    var wbcList: Array<Double> = []
+    var rbcList: Array<Double> = []
+    var hbList: Array<Double> = []
+    var hctList: Array<Double> = []
+    var pltList: Array<Double> = []
+    
+    var allItems:Array<String> = []
+    var allItemsIcon:Array<String> = []
+    
+    //折线图
+    let chartView1: LineChartView! = LineChartView()
+    let chartView2: LineChartView! = LineChartView()
+    let chartView3: LineChartView! = LineChartView()
+    let chartView4: LineChartView! = LineChartView()
+    let chartView5: LineChartView! = LineChartView()
+    let chartView6: LineChartView! = LineChartView()
+    var currentPosition = 0
+  
+    @IBAction func showBloodDetail(_ sender: Any) {
+        let pVC = UIStoryboard(name: "Main", bundle: nil)
+            .instantiateViewController(withIdentifier: "bloodDetailViewController")
+            as? bloodDetailViewController
+        pVC?.patientListArray = self.patientListArray
+        self.navigationController?.pushViewController(pVC!, animated: false)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        doctorSuggest()
+        
+        self.title = "血友通"
         setView()
+        
+        self.allItemsIcon = ["yao"]
+        self.allItems = ["保持剂量"]
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+
+        let headerView:UIView = UIView(frame:
+            CGRect(x:0, y:0, width:tableView!.frame.size.width, height:30))
+        let headerlabel:UILabel = UILabel(frame: headerView.bounds)
+        headerlabel.textColor = UIColor.black
+        headerlabel.backgroundColor = UIColor.clear
+        headerlabel.font = UIFont.systemFont(ofSize: 16)
+        headerlabel.text = "医生建议"
+        headerView.addSubview(headerlabel)
+        tableView?.tableHeaderView = headerView
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        showPatientblood()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.patientListArray.removeAll()
+        self.wbcList.removeAll()
+        self.rbcList.removeAll()
+        self.hbList.removeAll()
+        self.pltList.removeAll()
+        self.hctList.removeAll()
+        self.timeList.removeAll()
+    }
+    
+    let screen_width = 346
+    let screen_height = 260
+    
+    @IBAction func allLine(_ sender: Any) {
+        if currentPosition != 0 {
+            self.scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+        }
+    }
+    
+    @IBAction func wbcLine(_ sender: Any) {
+        if currentPosition != 1 {
+            currentPosition = 1
+            self.scrollView.setContentOffset(CGPoint(x: screen_width, y: 0), animated: true)
+        }
+    }
+    
+    @IBAction func rbcLine(_ sender: Any) {
+        if currentPosition != 2 {
+            currentPosition = 2
+            self.scrollView.setContentOffset(CGPoint(x: 2*screen_width, y: 0), animated: true)
+        }
+    }
+    
+    @IBAction func hbLine(_ sender: Any) {
+        if currentPosition != 3 {
+            currentPosition = 3
+            self.scrollView.setContentOffset(CGPoint(x: 3*screen_width, y: 0), animated: true)
+        }
+    }
+    
+    @IBAction func hctLine(_ sender: Any) {
+        if currentPosition != 4 {
+            currentPosition = 4
+            self.scrollView.setContentOffset(CGPoint(x: 4*screen_width, y: 0), animated: true)
+            
+        }
+    }
+    
+    @IBAction func pltLine(_ sender: Any) {
+        if currentPosition != 5 {
+            currentPosition = 5
+            self.scrollView.setContentOffset(CGPoint(x: 5*screen_width, y: 0), animated: true)
+        }
     }
     
     func setView(){
+        setBtn(btn: normalBtn)
+        setBtn(btn: symptomBtn)
         
-        // 轮播图
-        let bannerView = LLCycleScrollView()
-        let imagesURLStrings = [
-            "医院1",
-            "医院2",
-            "医院3"
-        ];
-        bannerView.imagePaths = imagesURLStrings
-        bannerView.coverImage = UIImage.init(named: "医院1")
-        bannerView.autoScrollTimeInterval = 3.0
-        bannerView.imageViewContentMode = .scaleAspectFit
-        view.addSubview(bannerView)
-        bannerView.snp.makeConstraints { (make) in
-            make.width.equalToSuperview()
-            make.height.equalTo(300)
-            make.top.equalTo(self.view).offset(-10)
-            make.centerX.equalToSuperview()
-        }
+        setShadow(view: linebgView, sColor: UIColor(red: 201.0 / 255.0, green: 201.0 / 255.0, blue: 201.0 / 255.0, alpha: 0.35), offset: CGSize(width: 0.0, height: -5.0), opacity: 1, radius: 5)
         
-        // 背景view，四个btn
-        let backView = UIView()
-        view.addSubview(backView)
-        backView.snp.makeConstraints{(make) in
-            make.width.equalTo(330)
-            make.height.equalTo(300)
-            make.top.equalTo(bannerView.snp.bottom).offset(15)
-            make.centerX.equalToSuperview()
-        }
+        chartView1.frame = CGRect(x: 0, y: 0, width: screen_width, height: screen_height)
+        chartView2.frame = CGRect(x: screen_width, y: 0, width: screen_width, height: screen_height)
+        chartView3.frame = CGRect(x: screen_width*2, y: 0, width: screen_width, height: screen_height)
+        chartView4.frame = CGRect(x: screen_width*3, y: 0, width: screen_width, height: screen_height)
+        chartView5.frame = CGRect(x: screen_width*4, y: 0, width: screen_width, height: screen_height)
+        chartView6.frame = CGRect(x: screen_width*5, y: 0, width: screen_width, height: screen_height)
         
-        // 血常规变化btn
-        let normalbutton = UIButton()
-        normalbutton.layer.cornerRadius = 12
-        backView.addSubview(normalbutton)
-        normalbutton.setTitle("血常规变化", for: .normal)
-        normalbutton.setTitleColor(UIColor.white, for: .normal)
-        normalbutton.backgroundColor = UIColor(red: 222.0 / 255.0, green: 177.0 / 255.0, blue: 243.0 / 255.0, alpha: 1.0)
-        normalbutton.setImage(UIImage(named: "normal"), for: .normal)
-        calculateEdgeInsets(btn: normalbutton)
-        normalbutton.addTarget(self, action: #selector(normalBtnClick(_:)), for: .touchUpInside)
-        normalbutton.snp.makeConstraints{(make) in
-            make.width.height.equalTo(150)
-            make.left.equalToSuperview().offset(10)
-        }
-        
-        // 治疗后症状btn
-        let changebutton = UIButton()
-        changebutton.layer.cornerRadius = 12
-        backView.addSubview(changebutton)
-        changebutton.setTitle("治疗后症状", for: .normal)
-        changebutton.setTitleColor(UIColor.white, for: .normal)
-        changebutton.backgroundColor = UIColor(red: 247.0 / 255.0, green: 231.0 / 255.0, blue: 164.0 / 255.0, alpha: 1.0)
-        changebutton.setImage(UIImage(named: "change"), for: .normal)
-        calculateEdgeInsets(btn: changebutton)
-        changebutton.addTarget(self, action: #selector(changeBtnClick(_:)), for: .touchUpInside)
-        changebutton.snp.makeConstraints{(make) in
-            make.width.height.equalTo(150)
-            make.right.equalToSuperview().offset(-10)
-        }
-        
-        // 血常规变化图表
-        let normalChangeChart = UIButton()
-        normalChangeChart.layer.cornerRadius = 12
-        backView.addSubview(normalChangeChart)
-        normalChangeChart.setTitle("血常规变化图表", for: .normal)
-        normalChangeChart.setTitleColor(UIColor.white, for: .normal)
-        normalChangeChart.backgroundColor = UIColor(red: 105.0 / 255.0, green: 195.0 / 255.0, blue: 247.0 / 255.0, alpha: 1.0)
-        normalChangeChart.addTarget(self, action: #selector(normalChangeChart(_:)), for: .touchUpInside)
-        normalChangeChart.snp.makeConstraints{(make) in
-            make.width.height.equalTo(150)
-            make.bottom.equalToSuperview().offset(5)
-            make.left.equalToSuperview().offset(10)
-        }
-        
-        // 症状变化图表
-        let SymptomChangeChart = UIButton()
-        SymptomChangeChart.layer.cornerRadius = 12
-        backView.addSubview(SymptomChangeChart)
-        SymptomChangeChart.setTitle("症状变化图表", for: .normal)
-        SymptomChangeChart.setTitleColor(UIColor.white, for: .normal)
-        SymptomChangeChart.backgroundColor = UIColor(red: 154.0 / 255.0, green: 160.0 / 255.0, blue: 248.0 / 255.0, alpha: 1.0)
-        SymptomChangeChart.addTarget(self, action: #selector(ChangedChartChart(_:)), for: .touchUpInside)
-        SymptomChangeChart.snp.makeConstraints{(make) in
-            make.width.height.equalTo(150)
-            make.bottom.equalToSuperview().offset(5)
-            make.right.equalToSuperview().offset(-10)
-        }
+        self.scrollView.contentSize = CGSize(width: 6*self.view.frame.width, height: 0)
         
     }
     
-    // 图片文字上下排列，居中
-    func calculateEdgeInsets(btn:UIButton) -> Void {
-        let imageWidth = btn.imageView?.bounds.size.width
-        let imageHeight = btn.imageView?.bounds.size.height
-        let labelWidth: CGFloat = (btn.titleLabel?.intrinsicContentSize.width)!
-        let labelHeight: CGFloat = (btn.titleLabel?.intrinsicContentSize.height)!
+    func setBtn(btn:UIButton) -> Void {
         
-        let imageTitleSpace:CGFloat = 40.0;
-        
-        let imageEdgeInsets = UIEdgeInsets(top: -imageTitleSpace/2-labelHeight, left: 0, bottom: 0, right: -labelWidth)
-        let labelEdgeInsets = UIEdgeInsets(top: 0, left: -imageWidth!, bottom: -imageHeight!-imageTitleSpace/2, right: 0)
-        
-        btn.titleEdgeInsets = labelEdgeInsets
-        btn.imageEdgeInsets = imageEdgeInsets
+        btn.layer.cornerRadius = 50
+        btn.layer.shadowOpacity = 0.35 //阴影区域透明度
+        btn.layer.shadowColor = UIColor.gray.cgColor // 阴影区域颜色
+        btn.layer.shadowOffset = CGSize(width: 3, height: 3) //阴影区域范围
     }
     
-    
-    @objc func buttonClick(_ button :UIButton) {
+    func setline(chartView:LineChartView){
         
-        let alertView = UIAlertController.init(title: "弹出框", message: "开始Swift的旅程吧", preferredStyle: .alert)
-        let action = UIAlertAction.init(title: "关闭", style: .default, handler: { (action) in
-            print("点击关闭弹按钮")
-        })
-        let action1 = UIAlertAction.init(title: "确定", style: .default, handler: { (action) in
-            print("点击确定按钮")
-        })
-        alertView.addAction(action)
-        alertView.addAction(action1)
-        self.present(alertView, animated: true, completion: {
-        })
+        chartView.rightAxis.enabled = false //不绘制右侧Y轴文字
+        chartView.xAxis.labelPosition = .bottom //x轴显示在下方
+        chartView.animate(xAxisDuration: 1)
+        
+        let xValues = timeList
+        chartView.drawBordersEnabled = true  //绘制图形区域边框
+        chartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: xValues)
+        chartView.xAxis.labelCount = 7
+        chartView.xAxis.granularity = 1
+        chartView.xAxis.axisMinimum = 0
+        chartView.xAxis.axisMaximum = 6
+        chartView.xAxis.forceLabelsEnabled = true
+        chartView.xAxis.granularityEnabled = true
+        chartView.setVisibleXRangeMaximum(10)
+        chartView.leftAxis.drawLimitLinesBehindDataEnabled = true
+        
+        self.scrollView.addSubview(chartView)
+    }
+    
+    // 显示全部图像
+    func lineShow(){
+        
+        let chartArr = [chartView1,chartView2,chartView3,chartView4,chartView5,chartView6]
+        for index in chartArr {
+            self.setline(chartView: index!)
+        }
+        
+        var wbcDataEntries = [ChartDataEntry]()
+        for i in 0..<wbcList.count {
+            
+            let entry = ChartDataEntry.init(x: Double(i), y: Double(wbcList[i]))
+            wbcDataEntries.append(entry)
+        }
+        
+        var rbcDataEntries = [ChartDataEntry]()
+        for i in 0..<rbcList.count {
+            
+            let entry = ChartDataEntry.init(x: Double(i), y: Double(rbcList[i]))
+            rbcDataEntries.append(entry)
+        }
+        
+        var hbDataEntries = [ChartDataEntry]()
+        for i in 0..<hbList.count {
+            
+            let entry = ChartDataEntry.init(x: Double(i), y: Double(hbList[i]))
+            hbDataEntries.append(entry)
+        }
+        
+        var hctDataEntries = [ChartDataEntry]()
+        for i in 0..<hctList.count {
+            
+            let entry = ChartDataEntry.init(x: Double(i), y: Double(hctList[i]))
+            hctDataEntries.append(entry)
+        }
+        
+        var pltDataEntries = [ChartDataEntry]()
+        for i in 0..<pltList.count {
+            
+            let entry = ChartDataEntry.init(x: Double(i), y: Double(pltList[i]))
+            pltDataEntries.append(entry)
+        }
+        
+        let wbcChartDataSet = LineChartDataSet(values: wbcDataEntries, label: "白细胞")
+        let wbcColor = ChartColorTemplates.colorFromString("#40E0D0")
+        wbcChartDataSet.colors = [wbcColor]
+        wbcChartDataSet.drawCirclesEnabled = false //不绘制转折点
+        wbcChartDataSet.drawValuesEnabled = false //不绘制拐点上的文字
+        wbcChartDataSet.mode = .horizontalBezier  //贝塞尔曲线
+        
+        let rbcChartDataSet = LineChartDataSet(values: rbcDataEntries, label: "红细胞")
+        let rbcColor = ChartColorTemplates.colorFromString("#DB4B41")
+        rbcChartDataSet.colors = [rbcColor]
+        rbcChartDataSet.drawCirclesEnabled = false //不绘制转折点
+        rbcChartDataSet.drawValuesEnabled = false //不绘制拐点上的文字
+        rbcChartDataSet.mode = .horizontalBezier  //贝塞尔曲线
+        
+        let hbChartDataSet = LineChartDataSet(values: hbDataEntries, label: "血红蛋白")
+        let hbColor = ChartColorTemplates.colorFromString("#FF6400")
+        hbChartDataSet.colors = [hbColor]
+        hbChartDataSet.drawCirclesEnabled = false //不绘制转折点
+        hbChartDataSet.drawValuesEnabled = false //不绘制拐点上的文字
+        hbChartDataSet.mode = .horizontalBezier  //贝塞尔曲线
+        
+        let hctChartDataSet = LineChartDataSet(values: hctDataEntries, label: "红细胞比积")
+        let hctColor = ChartColorTemplates.colorFromString("#F2AD00")
+        hctChartDataSet.colors = [hctColor]
+        hctChartDataSet.drawCirclesEnabled = false //不绘制转折点
+        hctChartDataSet.drawValuesEnabled = false //不绘制拐点上的文字
+        hctChartDataSet.mode = .horizontalBezier  //贝塞尔曲线
+        
+        let pltChartDataSet = LineChartDataSet(values: pltDataEntries, label: "血小板")
+        let pltColor = ChartColorTemplates.colorFromString("#100DFF")
+        pltChartDataSet.colors = [pltColor]
+        pltChartDataSet.drawCirclesEnabled = false //不绘制转折点
+        pltChartDataSet.drawValuesEnabled = false //不绘制拐点上的文字
+        pltChartDataSet.mode = .horizontalBezier  //贝塞尔曲线
+        
+        let chartData1 = LineChartData(dataSets: [wbcChartDataSet,rbcChartDataSet,hbChartDataSet,hctChartDataSet,pltChartDataSet])
+        let chartData2 = LineChartData(dataSets: [wbcChartDataSet])
+        let chartData3 = LineChartData(dataSets: [rbcChartDataSet])
+        let chartData4 = LineChartData(dataSets: [hbChartDataSet])
+        let chartData5 = LineChartData(dataSets: [hctChartDataSet])
+        let chartData6 = LineChartData(dataSets: [pltChartDataSet])
+        
+        //最高界限
+        var limitLine1 = ChartLimitLine(limit: 10, label: "最高标准：10")
+        chartView2.leftAxis.addLimitLine(limitLine1)
+        
+        //最低界限
+        var limitLine2 = ChartLimitLine(limit: 4, label: "最低标准：4")
+        chartView2.leftAxis.addLimitLine(limitLine2)
+        
+        //最高界限
+        limitLine1 = ChartLimitLine(limit: 5.1, label: "最高标准：5.1")
+        chartView3.leftAxis.addLimitLine(limitLine1)
+        
+        //最低界限
+        limitLine2 = ChartLimitLine(limit: 3.8, label: "最低标准：3.8")
+        chartView3.leftAxis.addLimitLine(limitLine2)
+        
+        //最高界限
+        limitLine1 = ChartLimitLine(limit: 150, label: "最高标准：150")
+        chartView4.leftAxis.addLimitLine(limitLine1)
+        
+        //最低界限
+        limitLine2 = ChartLimitLine(limit: 115, label: "最低标准：115")
+        chartView4.leftAxis.addLimitLine(limitLine2)
+        
+        //最高界限
+        limitLine1 = ChartLimitLine(limit: 45, label: "最高标准：45")
+        chartView5.leftAxis.addLimitLine(limitLine1)
+        
+        //最低界限
+        limitLine2 = ChartLimitLine(limit: 35, label: "最低标准：35")
+        chartView5.leftAxis.addLimitLine(limitLine2)
+        
+        //最高界限
+        limitLine1 = ChartLimitLine(limit: 350, label: "最高标准：350")
+        chartView6.leftAxis.addLimitLine(limitLine1)
+        
+        //最低界限
+        limitLine2 = ChartLimitLine(limit: 125, label: "最低标准：125")
+        chartView6.leftAxis.addLimitLine(limitLine2)
+        
+        
+        //设置折现图数据
+        chartView1.data = chartData1
+        chartView2.data = chartData2
+        chartView3.data = chartData3
+        chartView4.data = chartData4
+        chartView5.data = chartData5
+        chartView6.data = chartData6
+    }
+    
+    // 获取患者血常规信息
+    func showPatientblood() {
+        
+        let loginUrl = xytURL + doctorPatientBlood
+        
+        let doctorId = UserDefaults.standard.string(forKey: "doctorID")
+        let patientID = UserDefaults.standard.string(forKey: "patientID")
+        
+        let bodyDic:Dictionary = ["doctor_id": doctorId ?? "", "patient_id": patientID  ]
+        print(bodyDic)
+        let jsonData = getJSONStringFromDictionary(dictionary: bodyDic as NSDictionary)
+        
+        let url = URL(string: loginUrl)!
+        var request = URLRequest(url: url)
+        request.httpMethod = HTTPMethod.post.rawValue
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = jsonData
+        
+        Alamofire.request(request).responseJSON {
+            (response) in
+            
+            // 请求成功
+            if(response.error == nil){
+                let jsonValue = response.result.value
+                // 得到info
+                if jsonValue != nil {
+                    XYTPrint(jsonValue)
+                    let json = JSON(jsonValue!)
+                    let result = json["result"].stringValue
+                    
+                    if result == "success" {
+                        
+                        
+                        for (_,subJson):(String, JSON) in json["data"] {
+                            self.patientListArray.append(subJson.dictionaryValue)
+                        }
+                        
+                        //根据时间进行排序
+                        self.patientListArray = self.patientListArray.sorted(by: { (array1, array2) -> Bool in
+                            let obj1 = array1["record_time"]?.stringValue
+                            let obj2 = array2["record_time"]?.stringValue
+                            let dateFormater = DateFormatter()
+                            dateFormater.dateFormat = "YYYY-MM-dd"
+                            let date1 = dateFormater.date(from: obj1!)
+                            let date2 = dateFormater.date(from: obj2!)
+                            return date1?.compare(date2!) == .orderedAscending
+                            
+                        })
+                        
+                        XYTPrint(self.patientListArray)
+                        
+                        // time
+                        for index in self.patientListArray{
+                            let time = index["record_time"]!.stringValue
+                            let shortTime = time.suffix(5)
+                            let wbc = index["wbc"]?.doubleValue
+                            let rbc = index["rbc"]?.doubleValue
+                            let hb = index["hb"]?.doubleValue
+                            let hct = index["hct"]?.doubleValue
+                            let plt = index["plt"]?.doubleValue
+                            
+                            self.timeList.append(String(shortTime))
+                            self.wbcList.append(wbc!)
+                            self.rbcList.append(rbc!)
+                            self.hbList.append(hb!)
+                            self.hctList.append(hct!)
+                            self.pltList.append(plt!)
+                        }
+                        
+                        self.lineShow()
+                    }
+                }
+                    // 请求失败
+                else{
+                    XYTPrint("请求失败\(String(describing: response.error))")
+                }
+            }
+        }
+    }
+    
+    // 获取医生用药建议
+    func doctorSuggest() {
+        
+        let loginUrl = xytURL + patientMedical
+        
+        let patientID = UserDefaults.standard.string(forKey: "patientID")
+        
+        let bodyDic:Dictionary = ["patient_id": patientID]
+        XYTPrint(bodyDic)
+        let jsonData = getJSONStringFromDictionary(dictionary: bodyDic as NSDictionary)
+        
+        let url = URL(string: loginUrl)!
+        var request = URLRequest(url: url)
+        request.httpMethod = HTTPMethod.post.rawValue
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = jsonData
+        
+        Alamofire.request(request).responseJSON {
+            (response) in
+            
+            // 请求成功
+            if(response.error == nil){
+                let jsonValue = response.result.value
+                // 得到info
+                if jsonValue != nil {
+                    XYTPrint(jsonValue)
+                    let json = JSON(jsonValue!)
+                    let result = json["result"].stringValue
+                    
+                    if result == "success" {
+                        let status = json["status"].stringValue
+                        self.allItems.append(status)
+                    }
+                    self.tableView.reloadData()
+                }
+                    // 请求失败
+                else{
+                    XYTPrint("请求失败\(String(describing: response.error))")
+                }
+            }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let item = self.allItems
+        return item.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "medicalCell", for: indexPath) as! medicalCell
+        cell.medIcon.image = UIImage(named: allItemsIcon[indexPath.row])
+        cell.medName.text = allItems[indexPath.row]
+        
+        setShadow(view: cell.bgView, sColor: UIColor(red: 201.0 / 255.0, green: 201.0 / 255.0, blue: 201.0 / 255.0, alpha: 0.35), offset: CGSize(width: 5.0, height: 5.0), opacity: 1, radius: 5)
+        
+        return cell
     }
     
     // 跳转到血常规变化填写页面
-    @objc func normalBtnClick(_ button :UIButton) {
-        let pVC = patientNormalChangeViewController()
+    @IBAction func normalBtnClick(_ button :UIButton) {
+        let pVC = patientNormalInputViewController()
         self.navigationController?.pushViewController(pVC, animated: true)
     }
     
     // 跳转到治疗后症状填写页面
-    @objc func changeBtnClick(_ button :UIButton) {
-        let pVC = patientChangedViewController()
+    @IBAction func changeBtnClick(_ button :UIButton) {
+        let pVC = patientChangedInputViewController()
         self.navigationController?.pushViewController(pVC, animated: true)
     }
     
-    // 跳转到血常规变化图表
-    @objc func normalChangeChart(_ button :UIButton){
-        let pVC = patientNoramlChartViewController()
-        self.navigationController?.pushViewController(pVC, animated: true)
-    }
     
     // 跳转到症状变化图表
-    @objc func ChangedChartChart(_ button :UIButton){
+    @IBAction func ChangedChartChart(_ button :UIButton){
         let pVC = patientChangedChartViewController()
         self.navigationController?.pushViewController(pVC, animated: true)
     }

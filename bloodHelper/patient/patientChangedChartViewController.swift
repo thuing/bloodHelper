@@ -29,7 +29,7 @@ class patientChangedChartViewController: UIViewController {
     }
     
     override func viewDidLayoutSubviews() {
-        gridViewController.view.frame = CGRect(x:-10, y:64, width:view.frame.width,
+        gridViewController.view.frame = CGRect(x:-10, y:88, width:view.frame.width,
                                                height:view.frame.height-60)
     }
     

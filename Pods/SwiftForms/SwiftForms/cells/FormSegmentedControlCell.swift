@@ -42,6 +42,7 @@ open class FormSegmentedControlCell: FormBaseCell {
         contentView.addConstraint(NSLayoutConstraint(item: segmentedControl, attribute: .centerY, relatedBy: .equal, toItem: contentView, attribute: .centerY, multiplier: 1.0, constant: 0.0))
         
         segmentedControl.addTarget(self, action: #selector(FormSegmentedControlCell.valueChanged(_:)), for: .valueChanged)
+        
     }
     
     open override func update() {

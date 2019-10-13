@@ -7,70 +7,112 @@
 //
 
 import UIKit
+import SwiftyJSON
+import Alamofire
 
-class doctorViewController: UIViewController {
+// 医生首页
+class doctorViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+
+    var patientListArray: Array<Dictionary<String,JSON>> = [] as! Array<Dictionary>
+    let patientImg = ["icon-test","user__easyico","icon-test","user__easyico","icon-test","user__easyico","icon-test"]
+    
+    @IBOutlet weak var patientList: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+     
+        showPatientList()
+        patientList.delegate = self
+        patientList.dataSource = self
         
-        
-        setView()
+        //去掉没有数据显示部分多余的分隔线
+        patientList.tableFooterView =  UIView.init(frame: CGRect.zero)
     }
     
-    func setView() {
+    
+    func showPatientList() {
         
-        // 患者血常规变化表格btn
-        let patientChangedButton = UIButton()
-        patientChangedButton.layer.cornerRadius = 12
-        view.addSubview(patientChangedButton)
-        patientChangedButton.setTitle("患者血常规变化表格", for: .normal)
-        patientChangedButton.setTitleColor(UIColor.white, for: .normal)
-        patientChangedButton.backgroundColor = UIColor(red: 124.0 / 255.0, green: 248.0 / 255.0, blue: 196.0 / 255.0, alpha: 1.0)
-        patientChangedButton.addTarget(self, action: #selector(doctorNormalChart), for: .touchUpInside)
-        patientChangedButton.snp.makeConstraints{(make) in
-            make.width.equalTo(300)
-            make.height.equalTo(100)
-            make.centerY.equalToSuperview()
-            make.centerX.equalToSuperview()
+        let loginUrl = xytURL + doctorPatients
+        
+        let doctorId = UserDefaults.standard.string(forKey: "doctorID")
+        
+        let bodyDic:Dictionary = ["doctor_id": doctorId ?? "" ]
+        print(bodyDic)
+        let jsonData = getJSONStringFromDictionary(dictionary: bodyDic as NSDictionary)
+        
+        let url = URL(string: loginUrl)!
+        var request = URLRequest(url: url)
+        request.httpMethod = HTTPMethod.post.rawValue
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = jsonData
+        
+        Alamofire.request(request).responseJSON {
+            (response) in
+            
+            // 请求成功
+            if(response.error == nil){
+                let jsonValue = response.result.value
+                // 得到info
+                if jsonValue != nil {
+                    XYTPrint(jsonValue)
+                    let json = JSON(jsonValue!)
+                    let result = json["result"].stringValue
+                    
+                    if result == "success" {
+                        
+                        for (_,subJson):(String, JSON) in json["data"] {
+                            self.patientListArray.append(subJson.dictionaryValue)
+                        }
+                        self.patientList.reloadData()
+                    }
+                }
+                    // 请求失败
+                else{
+                    XYTPrint("请求失败\(String(describing: response.error))")
+                }
+            }
         }
-        
-        // 患者个人信息表格btn
-        let patientPersonalButton = UIButton()
-        patientPersonalButton.layer.cornerRadius = 12
-        view.addSubview(patientPersonalButton)
-        patientPersonalButton.setTitle("患者个人信息表格", for: .normal)
-        patientPersonalButton.setTitleColor(UIColor.white, for: .normal)
-        patientPersonalButton.backgroundColor = UIColor(red: 240.0 / 255.0, green: 174.0 / 255.0, blue: 174.0 / 255.0, alpha: 1.0)
-        patientPersonalButton.addTarget(self, action: #selector(patientPersonalChart), for: .touchUpInside)
-        patientPersonalButton.snp.makeConstraints{(make) in
-            make.width.equalTo(300)
-            make.height.equalTo(100)
-            make.bottom.equalTo(patientChangedButton.snp.top).offset(-10)
-            make.centerX.equalToSuperview()
-        }
-        
-        // 患者治疗后症状表格btn
-        let patientAfterButton = UIButton()
-        patientAfterButton.layer.cornerRadius = 12
-        view.addSubview(patientAfterButton)
-        patientAfterButton.setTitle("患者治疗后症状表格", for: .normal)
-        patientAfterButton.setTitleColor(UIColor.white, for: .normal)
-        patientAfterButton.backgroundColor = UIColor(red: 154.0 / 255.0, green: 160.0 / 255.0, blue: 247.0 / 255.0, alpha: 1.0)
-        patientAfterButton.addTarget(self, action: #selector(doctorChangedChart), for: .touchUpInside)
-        patientAfterButton.snp.makeConstraints{(make) in
-            make.width.equalTo(300)
-            make.height.equalTo(100)
-            make.top.equalTo(patientChangedButton.snp.bottom).offset(10)
-            make.centerX.equalToSuperview()
-        }
-        
     }
     
-    // 跳转到患者个人信息表格
-    @objc func patientPersonalChart(){
-        let pVC = patientPersonalChartViewController()
-        self.navigationController?.pushViewController(pVC, animated: true)
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        return patientListArray.count
     }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "patientListCell", for: indexPath) as! patientListCell
+        let patient = patientListArray[indexPath.item]
+        
+        
+        cell.patientImg.image = UIImage(named: patientImg[indexPath.row])
+        cell.patientName.text = patient["patient_name"]?.string
+        cell.patientId.text = patient["patient_id"]?.string
+        cell.patientSex.text = patient["patient_gender"]?.string
+        cell.patientAge.text = patient["patient_age"]?.stringValue
+        
+        setShadow(view: cell.bgview, sColor: UIColor(red: 201.0 / 255.0, green: 201.0 / 255.0, blue: 201.0 / 255.0, alpha: 0.35), offset: CGSize(width: 5.0, height: 5.0), opacity: 1, radius: 5)
+        
+        
+        return cell
+    }
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // 跳转到详情页面
+        let patientID = self.patientListArray[indexPath.item]["patient_id"]?.stringValue
+        
+        let pVC = UIStoryboard(name: "Main", bundle: nil)
+            .instantiateViewController(withIdentifier: "patientDetailViewController")
+            as? patientDetailViewController
+        
+        pVC?.patientID = patientID ?? ""
+        pVC?.patientImg = UIImage(named: patientImg[indexPath.item])
+        self.navigationController?.pushViewController(pVC!, animated: false)
+    }
+   
+    
     
     // 跳转到患者血常规变化表格
     @objc func doctorNormalChart(){

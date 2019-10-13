@@ -7,11 +7,9 @@
 //
 
 import UIKit
+import SwiftForms
 
-class patientVisitViewController: UIViewController {
-    
-    let bgView = UIView()
-    let tableTool = UITableTool()
+class patientVisitViewController: FormViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,57 +19,57 @@ class patientVisitViewController: UIViewController {
     
     func setView(){
         
-        bgView.backgroundColor = UIColor.white
-        view.addSubview(bgView)
-        bgView.snp.makeConstraints{(make) in
-            make.width.height.equalToSuperview()
-            make.top.equalTo(60)
-            make.center.equalToSuperview()
-        }
+        self.title = "患者就诊信息"
         
-        let table1 = UIView()
-        bgView.addSubview(table1)
-        table1.snp.makeConstraints{(make) in
-            make.width.equalToSuperview()
-            make.height.equalTo(60)
-            make.centerX.equalToSuperview()
-            make.top.equalTo(10)
-        }
+        let form = FormDescriptor()
         
-        let table2 = UIView()
-        bgView.addSubview(table2)
-        table2.snp.makeConstraints{(make) in
-            make.width.equalToSuperview()
-            make.height.equalTo(60)
-            make.centerX.equalToSuperview()
-            make.top.equalTo(table1.snp.bottom)
-        }
+        //第一个section分区
+        let section1 = FormSectionDescriptor(headerTitle: nil, footerTitle: nil)
+        //患者填写
+        var row = FormRowDescriptor(tag: "mnum", type: .text, title: "就诊卡号：")
+        row.configuration.cell.cellClass = inputCell.self
+        row.configuration.cell.placeholder = "请输入就诊卡号"
+        section1.rows.append(row)
         
-        let table3 = UIView()
-        bgView.addSubview(table3)
-        table3.snp.makeConstraints{(make) in
-            make.width.equalToSuperview()
-            make.height.equalTo(60)
-            make.centerX.equalToSuperview()
-            make.top.equalTo(table2.snp.bottom)
-        }
+        row = FormRowDescriptor(tag: "dnum", type: .text, title: "医生编号：")
+        row.configuration.cell.cellClass = inputCell.self
+        row.configuration.cell.placeholder = "请输入编号"
+        section1.rows.append(row)
         
-        tableTool.tableCell(table:table1,labelStr: "就诊卡号：", placeholderStr: "请输入就诊卡号")
-        tableTool.tableCell(table:table2,labelStr: "医生编号：", placeholderStr: "请输入编号")
-        tableTool.tableCell(table:table3,labelStr: "初诊日期：", placeholderStr: "")
+        row = FormRowDescriptor(tag: "first_visit_date", type: .date, title: "初诊日期：")
+        section1.rows.append(row)
         
-        let submitBtn = UIButton()
-        bgView.addSubview(submitBtn)
-        submitBtn.setTitle("提交", for: .normal)
-        submitBtn.layer.cornerRadius = 5
-        submitBtn.layer.backgroundColor = UIColor(red: 64.0 / 255.0, green: 224.0 / 255.0, blue: 208.0 / 255.0, alpha: 1.0).cgColor
-        submitBtn.snp.makeConstraints{(make) in
-            make.width.equalTo(280)
-            make.height.equalTo(40)
-            make.centerX.equalToSuperview()
-            make.top.equalTo(table3.snp.bottom).offset(10)
+        //第二个section分区
+        let section2 = FormSectionDescriptor(headerTitle: nil, footerTitle: nil)
+        
+        //提交按钮
+        row = FormRowDescriptor(tag: "button", type: .button, title: "提交")
+        row.configuration.cell.cellClass = buttonCell.self
+        row.configuration.button.didSelectClosure = { _ in
+            self.submit()
         }
+        section2.rows.append(row)
+        
+        //将两个分区添加到form中
+        form.sections = [section1, section2]
+        self.form = form
+        
     }
     
+    //登录按钮点击
+    func submit() {
+        //取消当前编辑状态
+        self.view.endEditing(true)
+        
+        //将表单中输入的内容打印出来
+        let message = self.form.formValues().description
+        print(message)
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
     
 }
+
+

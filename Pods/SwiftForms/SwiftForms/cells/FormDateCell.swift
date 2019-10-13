@@ -25,6 +25,7 @@ open class FormDateCell: FormValueCell {
         hiddenTextField.inputView = datePicker
         hiddenTextField.isAccessibilityElement = false
         datePicker.datePickerMode = .date
+        datePicker.locale = NSLocale(localeIdentifier: "zh_CN") as Locale
         datePicker.addTarget(self, action: #selector(FormDateCell.valueChanged(_:)), for: .valueChanged)
     }
     

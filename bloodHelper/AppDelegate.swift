@@ -15,31 +15,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-//        UserDefaults.standard.set("doctor", forKey: UuserIdentity)
-//        UserDefaults.standard.set("patient", forKey: UuserIdentity)
-        UserDefaults.standard.set("??", forKey: UuserIdentity)
-        let userIdentity = UserDefaults.standard.string(forKey: UuserIdentity)
+        //UserDefaults.standard.set("2", forKey: userStatus)
+        let userStatus = UserDefaults.standard.string(forKey: "userStatus")
         let appdelegate = UIApplication.shared.delegate as? AppDelegate
         
-        if userIdentity == "patient" {
+        if userStatus == "1" {
             print("用户身份为患者")
             let story = UIStoryboard(name: "Main", bundle: nil)
             let patientController = story.instantiateViewController(withIdentifier: "patientTabbar") as? UITabBarController
             
             appdelegate?.window?.rootViewController = patientController
 
-        }else if userIdentity == "doctor" {
+        }else if userStatus == "2" {
             print("用户身份为医生")
             let story = UIStoryboard(name: "Main", bundle: nil)
             let doctorController = story.instantiateViewController(withIdentifier: "doctorTabbar") as? UITabBarController
             
             appdelegate?.window?.rootViewController = doctorController
         }else{
-            print("kong")
+            print("未登录")
         }
-        
-        
-        //appdelegate.tab.selectedIndex = 0;切换到想要的tabbar后选择到到哪个item下
         
         
         return true

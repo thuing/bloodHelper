@@ -19,8 +19,8 @@ class patientPersonalViewController: UIViewController, UITableViewDelegate, UITa
         super.viewDidLoad()
         
         //初始化数据
-        self.allItems = ["患者个人信息填写","患者就诊信息填写","患者初诊血常规填写"]
-        self.allItemsIcon = ["个人信息","患者就诊信息","患者血常规"]
+        self.allItems = ["患者个人信息填写","患者初诊血常规填写"]
+        self.allItemsIcon = ["个人信息","患者血常规"]
         
         //创建表视图
         tableView = UITableView(frame:self.view.frame, style:.plain)
@@ -69,6 +69,7 @@ class patientPersonalViewController: UIViewController, UITableViewDelegate, UITa
         findNearInstitutionBtn.setTitle("查找附近数据检测机构", for: .normal)
         findNearInstitutionBtn.layer.cornerRadius = 5
         findNearInstitutionBtn.layer.backgroundColor = UIColor(red: 64.0 / 255.0, green: 224.0 / 255.0, blue: 208.0 / 255.0, alpha: 1.0).cgColor
+        findNearInstitutionBtn.addTarget(self, action: #selector(patientMap), for: UIControlEvents.touchUpInside)
         findNearInstitutionBtn.snp.makeConstraints{(make) in
             make.width.equalTo(280)
             make.height.equalTo(40)
@@ -89,7 +90,6 @@ class patientPersonalViewController: UIViewController, UITableViewDelegate, UITa
         let cell = tableView.dequeueReusableCell(withIdentifier: identify,for: indexPath as IndexPath) as UITableViewCell
         cell.accessoryType = .disclosureIndicator
         cell.imageView?.image = UIImage(named: allItemsIcon[indexPath.row])
-        print(allItemsIcon[indexPath.row])
         cell.textLabel?.text = allItems[indexPath.row]
         
         return cell
@@ -100,29 +100,16 @@ class patientPersonalViewController: UIViewController, UITableViewDelegate, UITa
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.tableView!.deselectRow(at: indexPath as IndexPath, animated: true)
         
-        //        let itemString = self.allItems[indexPath.row]
-        //
-        //        let alertController = UIAlertController(title: "提示",
-        //                                                message: "你选中了【\(itemString)】",
-        //            preferredStyle: .alert)
-        //        let okAction = UIAlertAction(title: "确定", style: .cancel, handler: nil)
-        //        alertController.addAction(okAction)
-        //        self.present(alertController, animated: true, completion: nil)
-        
         switch indexPath.row {
         case 0:
             patientInfo()
             break
         case 1:
-            patientVisit()
-            break
-        case 2:
             patientNormal()
             break
         default:
             print("tableView 有误")
         }
-        
         
         
     }
@@ -133,15 +120,15 @@ class patientPersonalViewController: UIViewController, UITableViewDelegate, UITa
         self.navigationController?.pushViewController(pVC, animated: true)
     }
     
-    // 跳转到患者就诊信息填写
-    func patientVisit(){
-        let pVC = patientVisitViewController()
-        self.navigationController?.pushViewController(pVC, animated: true)
-    }
-    
     // 跳转到患者初诊血常规填写
     func patientNormal() {
         let pVC = patientNormalViewController()
+        self.navigationController?.pushViewController(pVC, animated: true)
+    }
+    
+    // 跳转到地图
+    @objc  func patientMap(_ button :UIButton) {
+        let pVC = patientMapViewController()
         self.navigationController?.pushViewController(pVC, animated: true)
     }
     
