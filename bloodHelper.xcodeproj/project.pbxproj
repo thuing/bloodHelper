@@ -24,6 +24,7 @@
 		6565B8942270A5B800C007AB /* doctorInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6565B8932270A5B800C007AB /* doctorInfoViewController.swift */; };
 		6565B8982270A7C700C007AB /* doctorNormalChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6565B8972270A7C700C007AB /* doctorNormalChartViewController.swift */; };
 		6565B89A2270A7D700C007AB /* doctorChangedChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6565B8992270A7D700C007AB /* doctorChangedChartViewController.swift */; };
+		6569E1BC23548AA500AD43E4 /* symptomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6569E1BB23548AA500AD43E4 /* symptomCell.swift */; };
 		656D3C57226F071F00472776 /* patientPersonalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D3C56226F071F00472776 /* patientPersonalViewController.swift */; };
 		656D3C5B226F072600472776 /* patientVisitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D3C58226F072500472776 /* patientVisitViewController.swift */; };
 		656D3C5C226F072600472776 /* patientNormalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D3C59226F072600472776 /* patientNormalViewController.swift */; };
@@ -93,6 +94,7 @@
 		6565B8932270A5B800C007AB /* doctorInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = doctorInfoViewController.swift; sourceTree = "<group>"; };
 		6565B8972270A7C700C007AB /* doctorNormalChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = doctorNormalChartViewController.swift; sourceTree = "<group>"; };
 		6565B8992270A7D700C007AB /* doctorChangedChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = doctorChangedChartViewController.swift; sourceTree = "<group>"; };
+		6569E1BB23548AA500AD43E4 /* symptomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = symptomCell.swift; sourceTree = "<group>"; };
 		656D3C56226F071F00472776 /* patientPersonalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = patientPersonalViewController.swift; sourceTree = "<group>"; };
 		656D3C58226F072500472776 /* patientVisitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = patientVisitViewController.swift; sourceTree = "<group>"; };
 		656D3C59226F072600472776 /* patientNormalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = patientNormalViewController.swift; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 				65D2B4BF233CCB1800A74AD6 /* userSignUpViewController.swift */,
 				65EED477233E1DE700208AE1 /* xytTool.swift */,
 				65012E65235387F8007C822A /* symptomDetailViewController.swift */,
+				6569E1BB23548AA500AD43E4 /* symptomCell.swift */,
 			);
 			path = bloodHelper;
 			sourceTree = "<group>";
@@ -501,6 +504,7 @@
 				656D3C65226F073000472776 /* patientViewController.swift in Sources */,
 				656D3C63226F073000472776 /* doctorViewController.swift in Sources */,
 				6565B89A2270A7D700C007AB /* doctorChangedChartViewController.swift in Sources */,
+				6569E1BC23548AA500AD43E4 /* symptomCell.swift in Sources */,
 				65F126E8234F4F86004A7CB8 /* doctorPersonalViewController.swift in Sources */,
 				65E1B71922817CE900DCA70D /* whiteCellChartViewController.swift in Sources */,
 				65CF2C08230F904A00101656 /* buttonCell.swift in Sources */,

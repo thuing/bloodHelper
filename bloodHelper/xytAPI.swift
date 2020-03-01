@@ -15,6 +15,9 @@ import UIKit
 // 局域网
 let xytURL = "http://192.168.31.117:9000/"
 
+// 个人热点
+//let xytURL = "http://172.20.10.2:8888/"
+
 // 登录
 let userSignIn = "users/login/"
 
@@ -46,7 +49,7 @@ let doctorPatientData = "patient/patient_data/"
 let doctorPatientBlood = "blood/data/"
 
 // 医生查看患者治疗后症状数据
-let doctorPatientSymptom = "symptom/patient_data/"
+let patientSymptom = "symptom/patient_data/"
 
 // 患者查看用药建议
 let patientMedical = "medical/show/"
@@ -108,3 +111,6 @@ let doctorID = "doctorID"
 
 // 患者编号
 let patientID = "patientID"
+
+// 前一次状态
+let lastStatus = "lastStatus"

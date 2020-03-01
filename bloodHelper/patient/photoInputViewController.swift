@@ -21,7 +21,7 @@ class photoInputViewController: UIViewController,AVCaptureMetadataOutputObjectsD
         super.viewDidLoad()
         screenWidth = self.view.bounds.width
         screenHeight = self.view.bounds.height
-        setView()
+        //setView()
         setCamera()
     }
     
@@ -105,7 +105,7 @@ class photoInputViewController: UIViewController,AVCaptureMetadataOutputObjectsD
                 output.metadataObjectTypes = [ AVMetadataObject.ObjectType.qr]
                 //扫描区域
                 //rectOfInterest 属性中x和y互换，width和height互换。
-                output.rectOfInterest = CGRect(x: 100/screenHeight, y: (screenWidth/2-100)/screenWidth, width: 200/screenHeight, height: 200/screenWidth)
+                output.rectOfInterest = CGRect(x: 0, y: 0, width: screenHeight, height: screenWidth)
                 
             }
             

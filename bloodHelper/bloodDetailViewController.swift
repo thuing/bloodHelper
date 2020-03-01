@@ -50,7 +50,7 @@ class bloodDetailViewController: UIViewController {
             self.hbLabel.text = patientListArray[currentPosition]["hb"]?.stringValue
             self.hctLabel.text = patientListArray[currentPosition]["hct"]?.stringValue
             self.pltLabel.text = patientListArray[currentPosition]["plt"]?.stringValue
-             self.timeLabel.text = patientListArray[currentPosition]["record_time"]?.stringValue
+            self.timeLabel.text = patientListArray[currentPosition]["record_time"]?.stringValue
         }
     }
     

@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        //UserDefaults.standard.set("2", forKey: userStatus)
+        UserDefaults.standard.set("1", forKey: userStatus)
         let userStatus = UserDefaults.standard.string(forKey: "userStatus")
         let appdelegate = UIApplication.shared.delegate as? AppDelegate
         

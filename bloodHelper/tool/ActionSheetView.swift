@@ -7,7 +7,7 @@
 //
 
 let CELL_HEIGHT:CGFloat = 50;
-let CELL_SPACE :CGFloat = 5;
+let CELL_SPACE :CGFloat = 30;
 
 
 import UIKit
@@ -28,7 +28,7 @@ class ActionSheetView: UIView {
     lazy var btnBgView:UIView = {
         
         let btnBgView = UIView()
-        btnBgView.backgroundColor = UIColor.gray
+        btnBgView.backgroundColor = UIColor.lightGray
         btnBgView.alpha = 0.8
         return btnBgView
     }()

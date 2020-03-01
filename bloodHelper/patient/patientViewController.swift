@@ -12,16 +12,19 @@ import Charts
 import SwiftyJSON
 import Alamofire
 
-class patientViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
+class patientViewController: UIViewController{
     
     @IBOutlet weak var normalBtn: UIButton!
     
     @IBOutlet weak var linebgView: UIView!
     @IBOutlet weak var symptomBtn: UIButton!
-    @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet weak var suggestbg: UIView!
+    @IBOutlet weak var suggestionHint: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var suggestionLabel: UILabel!
     
+    let suggestArr = ["适量增","适量减","保持剂量","及时就医","无"]
     var patientListArray: Array<Dictionary<String,JSON>> = [] as! Array<Dictionary>
     var timeList: Array<String> = []
     var wbcList: Array<Double> = []
@@ -29,10 +32,7 @@ class patientViewController: UIViewController, UITableViewDelegate, UITableViewD
     var hbList: Array<Double> = []
     var hctList: Array<Double> = []
     var pltList: Array<Double> = []
-    
-    var allItems:Array<String> = []
-    var allItemsIcon:Array<String> = []
-    
+
     //折线图
     let chartView1: LineChartView! = LineChartView()
     let chartView2: LineChartView! = LineChartView()
@@ -41,6 +41,7 @@ class patientViewController: UIViewController, UITableViewDelegate, UITableViewD
     let chartView5: LineChartView! = LineChartView()
     let chartView6: LineChartView! = LineChartView()
     var currentPosition = 0
+    
   
     @IBAction func showBloodDetail(_ sender: Any) {
         let pVC = UIStoryboard(name: "Main", bundle: nil)
@@ -52,31 +53,16 @@ class patientViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        doctorSuggest()
-        
+    
         self.title = "血友通"
         setView()
         
-        self.allItemsIcon = ["yao"]
-        self.allItems = ["保持剂量"]
-        
-        tableView.delegate = self
-        tableView.dataSource = self
-
-        let headerView:UIView = UIView(frame:
-            CGRect(x:0, y:0, width:tableView!.frame.size.width, height:30))
-        let headerlabel:UILabel = UILabel(frame: headerView.bounds)
-        headerlabel.textColor = UIColor.black
-        headerlabel.backgroundColor = UIColor.clear
-        headerlabel.font = UIFont.systemFont(ofSize: 16)
-        headerlabel.text = "医生建议"
-        headerView.addSubview(headerlabel)
-        tableView?.tableHeaderView = headerView
     }
     
     override func viewWillAppear(_ animated: Bool) {
         showPatientblood()
+        
+        doctorSuggest()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -137,6 +123,8 @@ class patientViewController: UIViewController, UITableViewDelegate, UITableViewD
     func setView(){
         setBtn(btn: normalBtn)
         setBtn(btn: symptomBtn)
+        
+       setShadow(view: suggestbg, sColor: UIColor(red: 201.0 / 255.0, green: 201.0 / 255.0, blue: 201.0 / 255.0, alpha: 0.35), offset: CGSize(width: 5.0, height: 5.0), opacity: 1, radius: 5)
         
         setShadow(view: linebgView, sColor: UIColor(red: 201.0 / 255.0, green: 201.0 / 255.0, blue: 201.0 / 255.0, alpha: 0.35), offset: CGSize(width: 0.0, height: -5.0), opacity: 1, radius: 5)
         
@@ -320,6 +308,7 @@ class patientViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         let loginUrl = xytURL + doctorPatientBlood
         
+        UserDefaults.standard.set("1659105", forKey: "patientID")
         let doctorId = UserDefaults.standard.string(forKey: "doctorID")
         let patientID = UserDefaults.standard.string(forKey: "patientID")
         
@@ -425,10 +414,16 @@ class patientViewController: UIViewController, UITableViewDelegate, UITableViewD
                     let result = json["result"].stringValue
                     
                     if result == "success" {
-                        let status = json["status"].stringValue
-                        self.allItems.append(status)
+                        let status = json["data"]["status"].intValue
+                        let lastStatus = UserDefaults.standard.integer(forKey: "lastStatus")
+                        if lastStatus != status {
+                            UserDefaults.standard.set(status, forKey: "lastStatus")
+                            self.suggestionHint.isHidden = false
+                        } else{
+                            self.suggestionHint.isHidden = true
+                        }
+                        self.suggestionLabel.text = self.suggestArr[status - 1]
                     }
-                    self.tableView.reloadData()
                 }
                     // 请求失败
                 else{
@@ -436,22 +431,6 @@ class patientViewController: UIViewController, UITableViewDelegate, UITableViewD
                 }
             }
         }
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let item = self.allItems
-        return item.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: "medicalCell", for: indexPath) as! medicalCell
-        cell.medIcon.image = UIImage(named: allItemsIcon[indexPath.row])
-        cell.medName.text = allItems[indexPath.row]
-        
-        setShadow(view: cell.bgView, sColor: UIColor(red: 201.0 / 255.0, green: 201.0 / 255.0, blue: 201.0 / 255.0, alpha: 0.35), offset: CGSize(width: 5.0, height: 5.0), opacity: 1, radius: 5)
-        
-        return cell
     }
     
     // 跳转到血常规变化填写页面
@@ -469,8 +448,13 @@ class patientViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     // 跳转到症状变化图表
     @IBAction func ChangedChartChart(_ button :UIButton){
-        let pVC = patientChangedChartViewController()
-        self.navigationController?.pushViewController(pVC, animated: true)
+        
+        let pVC = UIStoryboard(name: "Main", bundle: nil)
+            .instantiateViewController(withIdentifier: "symptomDetailViewController")
+            as? symptomDetailViewController
+        let patientID = UserDefaults.standard.string(forKey: "patientID")
+        pVC?.patientID = patientID ?? ""
+        self.navigationController?.pushViewController(pVC!, animated: false)
     }
     
 

@@ -14,7 +14,7 @@ import Alamofire
 class doctorViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     var patientListArray: Array<Dictionary<String,JSON>> = [] as! Array<Dictionary>
-    let patientImg = ["icon-test","user__easyico","icon-test","user__easyico","icon-test","user__easyico","icon-test"]
+    let patientImg = ["user__easyico","icon-test","icon-test","icon-test","user__easyico","icon-test"]
     
     @IBOutlet weak var patientList: UITableView!
     
@@ -34,6 +34,7 @@ class doctorViewController: UIViewController, UITableViewDataSource, UITableView
         
         let loginUrl = xytURL + doctorPatients
         
+        UserDefaults.standard.set("A123", forKey: "doctorID")
         let doctorId = UserDefaults.standard.string(forKey: "doctorID")
         
         let bodyDic:Dictionary = ["doctor_id": doctorId ?? "" ]
@@ -84,7 +85,6 @@ class doctorViewController: UIViewController, UITableViewDataSource, UITableView
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "patientListCell", for: indexPath) as! patientListCell
         let patient = patientListArray[indexPath.item]
-        
         
         cell.patientImg.image = UIImage(named: patientImg[indexPath.row])
         cell.patientName.text = patient["patient_name"]?.string
